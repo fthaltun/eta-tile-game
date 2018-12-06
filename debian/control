@@ -1,0 +1,12 @@
+Source: eta-tile-game
+Section: games
+Priority: optional
+Maintainer: Fatih Altun <fatih.altun@pardus.org.tr>
+Build-Depends: debhelper (>= 9), qt5-default, qtdeclarative5-dev
+Standards-Version: 3.9.6
+Homepage: http://pardus.org.tr
+
+Package: eta-tile-game
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, qml-module-qtquick-controls, qml-module-qtquick-dialogs
+Description: ETA için yeniden tasarlanmış klasik 2048 oyunu

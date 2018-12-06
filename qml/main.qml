@@ -1,0 +1,132 @@
+import QtQuick 2.3
+import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.1
+import QtQuick.Dialogs 1.1
+import QtQuick.Window 2.1
+
+ApplicationWindow {
+    visible: true
+    width: 550
+    height: 740
+    title: qsTr("Eta Tile")
+
+    x: (Screen.width - width) / 2
+    y: (Screen.height - height) / 2
+
+    Item {
+        id: colors
+        focus: false
+        property var choose: {"bggray": "#383838",
+                              "bgorange": "#FF6C00",
+                              "fglight": "#EEEEEE"
+        }
+    }
+
+    color: colors.choose.bggray
+
+    Item {
+        width: 500
+        height: 700
+        anchors.centerIn: parent
+        focus: true
+        FontLoader { id: localFont; source: "qrc:///fonts/FiraSans-Regular.ttf" }
+        Text {
+            id: gameName
+            font.family: localFont.name
+            font.pixelSize: 55
+            font.bold: true
+            text: "ETA TILE"
+            color: colors.choose.fglight
+        }
+
+        Row {
+            anchors.right: parent.right
+            y:5
+            spacing: 5
+            Repeater {
+                id: scoreBoard
+                model: 2
+                Rectangle {
+                    width: (index == 0) ? 125 : 125
+                    height: 55
+                    radius: 3
+                    color: colors.choose.bgorange
+                    Text {
+                        text: (index == 0) ? qsTr("<b>SKOR</b>") : qsTr("<b>EN İYİ SKOR</b>")
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        y: 6
+                        font.family: localFont.name
+                        font.pixelSize: 17
+                        color: colors.choose.fglight
+                    }
+                    Text {
+                        text: ""
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        y: 25
+                        font.family: localFont.name
+                        font.pixelSize: 15
+                        font.bold: true
+                        color: "white"
+                    }
+                }
+            }
+        }
+
+        Text {
+            id: banner
+            y:110
+            height: 40
+            text: qsTr("<b>Sayıları birleştir ve 2048 sayısını elde et !</b>")
+            color: colors.choose.fglight
+            font.family: localFont.name
+            font.pixelSize: 16
+        }
+
+        Button {
+            width: 125
+            height: 40
+            y:100
+            anchors.right: parent.right
+            style: ButtonStyle {
+                background: Rectangle {
+                    color: colors.choose.bgorange
+                    radius: 3
+                    Text{
+                        anchors.centerIn: parent
+                        text: qsTr("Yeni Oyun")
+                        color: colors.choose.fglight
+                        font.family: localFont.name
+                        font.pixelSize: 18
+                        font.bold: true
+                    }
+                }
+            }
+            onClicked: StartNewGame
+        }
+
+        Rectangle {
+            y: 185
+            width: 500
+            height: 500
+            color: colors.choose.bgorange
+            radius: 6
+
+            Grid {
+                id: tileGrid
+                x: 15;
+                y: 15;
+                rows: 4; columns: 4; spacing: 15
+
+                Repeater {
+                    id: cells
+                    model: 16
+                    Rectangle {
+                        width: 425/4; height: 425/4
+                        radius: 3
+                        color: colors.choose.bggray
+                    }
+                }
+            }
+        }
+    }
+}
