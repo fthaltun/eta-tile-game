@@ -3,6 +3,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
+import "main.js" as Js
 
 ApplicationWindow {
     visible: true
@@ -125,6 +126,48 @@ ApplicationWindow {
                         radius: 3
                         color: colors.choose.bggray
                     }
+                }
+            }
+
+
+            MultiPointTouchArea {
+                id: aTouchArea
+                anchors.fill: parent
+                minimumTouchPoints: 1
+                maximumTouchPoints: 1
+
+                onTouchUpdated: {
+                    for (var i=0;i<touchPoints.length; i++)
+                    {
+                        var touch = touchPoints[i];
+                        Js.startx = touch.startX
+                        Js.endx = touch.x
+                        Js.starty = touch.startY
+                        Js.endy = touch.y
+                    }
+                }
+
+                onReleased: {
+                    Js.diffx = Js.endx - Js.startx;
+                    Js.diffy = Js.endy - Js.starty;
+                    Js.m_type = ""
+                    if (Math.abs(Js.diffx) > 100 || Math.abs(Js.diffy) > 100) {
+                        if (Math.abs(Js.diffx) > Math.abs(Js.diffy)) {
+                            if (Js.diffx > 0) {
+                                Js.m_type = "right"
+                            } else {
+                                Js.m_type = "left"
+                            }
+                        }
+                        else {
+                            if (Js.diffy > 0) {
+                                Js.m_type = "down"
+                            } else {
+                                Js.m_type = "up"
+                            }
+                        }
+                    }
+                    Js.action(Js.m_type)
                 }
             }
         }

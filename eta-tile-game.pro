@@ -6,6 +6,7 @@ SOURCES += main.cpp
 
 lupdate_only {
 SOURCES += qml/main.qml \
+           qml/main.js
 }
 
 RESOURCES += qml.qrc
