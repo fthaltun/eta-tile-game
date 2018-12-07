@@ -66,17 +66,92 @@ function startUp() {
 
 function action(m_type) {
 
+    var isMoved = false;
+    var i, j;
+    var v, v2, mrg, indices;
+
     if (m_type == "right"){
         console.log("swiped right");
+        for (i = 0; i < gridSize; i++) {
+            v = cellValues[i].slice();
+            v.reverse();
+            mrg = mergeVector(v);
+            v2 = mrg[0];
+            indices = mrg[1];
+
+            if (! arraysIdentical(v,v2)) {
+                isMoved = true;
+                v.reverse();
+                v2.reverse();
+                indices.reverse();
+                for (j = 0; j < indices.length; j++)
+                    indices[j] = gridSize - 1 - indices[j];
+                moveMergeTilesLeftRight(i, v, v2, indices, false);
+                cellValues[i] = v2;
+            }
+        }
     }
+
     else if (m_type == "left") {
         console.log("swiped left");
+        for (i = 0; i < gridSize; i++) {
+            v = cellValues[i];
+            mrg = mergeVector(v);
+            v2 = mrg[0];
+            indices = mrg[1];
+
+            if (! arraysIdentical(v,v2)) {
+                isMoved = true;
+                moveMergeTilesLeftRight(i, v, v2, indices, true);
+                cellValues[i] = v2;
+            }
+        }
     }
+
     else if (m_type == "up") {
         console.log("swiped up");
+        for (i = 0; i < gridSize; i++) {
+            v = cellValues.map(function(row) {return row[i];});
+            mrg = mergeVector(v);
+            v2 = mrg[0];
+            indices = mrg[1];
+
+            if (! arraysIdentical(v,v2)) {
+                isMoved = true;
+                moveMergeTilesUpDown(i, v, v2, indices, true);
+                for (j = 0; j < gridSize; j++) {
+                    cellValues[j][i] = v2[j];
+                }
+            }
+        }
     }
+
     else if (m_type == "down") {
         console.log("swiped down");
+        for (i = 0; i < gridSize; i++) {
+            v = cellValues.map(function(row) {return row[i];});
+            v.reverse();
+            mrg = mergeVector(v);
+            v2 = mrg[0];
+            indices = mrg[1];
+
+            if (! arraysIdentical(v,v2)) {
+                isMoved = true;
+                v.reverse();
+                v2.reverse();
+                indices.reverse();
+                for (j = 0; j < gridSize; j++) {
+                    indices[j] = gridSize - 1 - indices[j];
+                    cellValues[j][i] = v2[j];
+                }
+                moveMergeTilesUpDown(i, v, v2, indices, false);
+            }
+        }
+    }
+
+    if (isMoved) {
+        updateAvailableCells();
+        createNewTileItems(false);
     }
 
 }
@@ -156,4 +231,124 @@ function computeTileStyle(n, tileText) {
     }
     return sty;
 }
+
+function mergeVector(v0) {
+    var i, j;
+    var vlen = v0.length;
+    var indices = [];
+    // Pass 1: remove zero elements
+    var v = [];
+    for (i = 0; i < vlen; i++) {
+        indices[i] = v.length;
+        if (v0[i] > 0) {
+            v.push(v0[i]);
+        }
+    }
+
+    // Pass 2: merge same elements
+    var v2 = [];
+    for (i = 0; i < v.length; i++) {
+        if (i === v.length - 1) {
+            // The last element
+            v2.push(v[i]);
+        } else {
+            if (v[i] === v[i+1]) {
+                // move all right-side elements to left by 1
+                for (j = 0; j < vlen; j++) {
+                    if (indices[j] > v2.length)
+                        indices[j] -= 1;
+                }
+                // Merge i-1 and i
+                v2.push(v[i] + 1);
+                score += Math.pow(2, v[i] + 1);
+                i++;
+            } else {
+                v2.push(v[i]);
+            }
+        }
+    }
+
+    // Fill the gaps with zeros
+    for (i = v2.length; i < vlen; i++)
+        v2[i] = 0;
+
+    return [v2, indices];
+}
+
+function arraysIdentical(a, b) {
+    var i = a.length;
+    if (i !== b.length) return false;
+    while (i--) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+};
+
+function moveMergeTilesLeftRight(i, v, v2, indices, left) {
+    var j0, j;
+    for (j0 = 0; j0 < v.length; j0++) {
+        if (left) {
+            j = j0;
+        } else {
+            j = v.length - 1 - j0;
+        }
+
+        if (v[j] > 0 && indices[j] !== j) {
+            if (v2[indices[j]] > v[j] && tileItems[gridSize*i+indices[j]] !== null) {
+                // Move and merge
+                tileItems[gridSize*i+j].destroyFlag = true;
+                tileItems[gridSize*i+j].z = -1;
+                tileItems[gridSize*i+j].opacity = 0;
+                tileItems[gridSize*i+j].x = cells.itemAt(gridSize*i+indices[j]).x;
+
+                var tileText = labelFunc[label](v2[indices[j]]);
+                var sty = computeTileStyle(v2[indices[j]], tileText);
+                tileItems[gridSize*i+indices[j]].tileText = tileText;
+                tileItems[gridSize*i+indices[j]].color = sty.bgColor;
+                tileItems[gridSize*i+indices[j]].tileColor = sty.fgColor;
+                tileItems[gridSize*i+indices[j]].tileFontSize = sty.fontSize;
+            } else {
+                // Move only
+                tileItems[gridSize*i+j].x = cells.itemAt(gridSize*i+indices[j]).x;
+                tileItems[gridSize*i+indices[j]] = tileItems[gridSize*i+j];
+            }
+            tileItems[gridSize*i+j] = null;
+        }
+    }
+}
+
+function moveMergeTilesUpDown(i, v, v2, indices, up) {
+    var j0, j;
+    for (j0 = 0; j0 < v.length; j0++) {
+        if (up) {
+            j = j0;
+        } else {
+            j = v.length - 1 - j0;
+        }
+
+        if (v[j] > 0 && indices[j] !== j) {
+            if (v2[indices[j]] > v[j] && tileItems[gridSize*indices[j]+i] !== null) {
+                // Move and merge
+                tileItems[gridSize*j+i].destroyFlag = true;
+                tileItems[gridSize*j+i].z = -1;
+                tileItems[gridSize*j+i].opacity = 0;
+                tileItems[gridSize*j+i].y = cells.itemAt(gridSize*indices[j]+i).y;
+
+                var tileText = labelFunc[label](v2[indices[j]]);
+                var sty = computeTileStyle(v2[indices[j]], tileText);
+                tileItems[gridSize*indices[j]+i].tileText = tileText;
+                tileItems[gridSize*indices[j]+i].color = sty.bgColor;
+                tileItems[gridSize*indices[j]+i].tileColor = sty.fgColor;
+                tileItems[gridSize*indices[j]+i].tileFontSize = sty.fontSize;
+            } else {
+                // Move only
+                tileItems[gridSize*j+i].y = cells.itemAt(gridSize*indices[j]+i).y;
+                tileItems[gridSize*indices[j]+i] = tileItems[gridSize*j+i];
+            }
+            tileItems[gridSize*j+i] = null;
+        }
+    }
+}
+
+
 
