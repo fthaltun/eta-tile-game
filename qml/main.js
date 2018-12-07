@@ -9,6 +9,15 @@ var diffy = 0
 
 var m_type
 
+
+var gridSize = 4;
+var cellValues;
+var tileItems = [];
+var availableCells;
+var targetLevel = 1;
+var checkTargetFlag = true;
+var tileComponent = Qt.createComponent("tile.qml");
+
 function action(m_type) {
 
     if (m_type == "right"){
