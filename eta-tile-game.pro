@@ -2,7 +2,8 @@ TEMPLATE = app
 
 QT += qml quick widgets
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    settings.cpp
 
 lupdate_only {
 SOURCES += qml/main.qml \
@@ -24,4 +25,7 @@ TARGET = eta-tile-game
 target.path = /usr/bin/
 
 INSTALLS += target
+
+HEADERS += \
+    settings.h
 

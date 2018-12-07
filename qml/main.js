@@ -9,6 +9,8 @@ var diffy = 0
 
 var m_type
 
+var score = 0;
+var bestScore = settings.value("bestScore", 0);
 
 var gridSize = 4;
 var cellValues;
@@ -18,8 +20,17 @@ var targetLevel = 1;
 var checkTargetFlag = true;
 var tileComponent = Qt.createComponent("tile.qml");
 
+var label = settings.value("label", "2048");
+var labelFunc = {
+    "2048":
+    function(n) {
+        return Math.pow(2, n).toString();
+    }
+}
+
 function startUp() {
 
+    score = 0;
     checkTargetFlag = true;
     var i;
     var j;
@@ -39,6 +50,13 @@ function startUp() {
         tileItems[i] = null;
     }
 
+
+    if (bestScore > settings.value("bestScore", 0)) {
+        console.log("Updating new high score...");
+        settings.setValue("bestScore", bestScore);
+    }
+
+    settings.setValue("label", "2048");
 
     console.log("Started a new game");
 }

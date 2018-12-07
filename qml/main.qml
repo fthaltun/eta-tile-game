@@ -172,4 +172,5 @@ ApplicationWindow {
             }
         }
     }
+    Component.onCompleted: Js.startUp();
 }
