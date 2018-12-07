@@ -18,6 +18,31 @@ var targetLevel = 1;
 var checkTargetFlag = true;
 var tileComponent = Qt.createComponent("tile.qml");
 
+function startUp() {
+
+    checkTargetFlag = true;
+    var i;
+    var j;
+
+    cellValues = new Array(gridSize);
+    for (i = 0; i < gridSize; i++) {
+        cellValues[i] = new Array(gridSize);
+        for (j = 0; j < gridSize; j++)
+            cellValues[i][j] = 0;
+    }
+
+    for (i = 0; i < Math.pow(gridSize, 2); i++) {
+        try {
+            tileItems[i].destroy();
+        } catch(e) {
+        }
+        tileItems[i] = null;
+    }
+
+
+    console.log("Started a new game");
+}
+
 function action(m_type) {
 
     if (m_type == "right"){

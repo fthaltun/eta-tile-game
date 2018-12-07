@@ -102,7 +102,7 @@ ApplicationWindow {
                     }
                 }
             }
-            onClicked: StartNewGame
+            onClicked: Js.startUp()
         }
 
         Rectangle {
