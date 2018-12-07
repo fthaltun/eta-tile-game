@@ -6,6 +6,7 @@ SOURCES += main.cpp
 
 lupdate_only {
 SOURCES += qml/main.qml \
+           qml/tile.qml \
            qml/main.js
 }
 
@@ -23,3 +24,4 @@ TARGET = eta-tile-game
 target.path = /usr/bin/
 
 INSTALLS += target
+
