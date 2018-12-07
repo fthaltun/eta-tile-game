@@ -50,6 +50,9 @@ function startUp() {
         tileItems[i] = null;
     }
 
+    updateAvailableCells();
+    createNewTileItems(true);
+
 
     if (bestScore > settings.value("bestScore", 0)) {
         console.log("Updating new high score...");
@@ -77,3 +80,80 @@ function action(m_type) {
     }
 
 }
+
+function updateAvailableCells() {
+    availableCells = [];
+    for (var i = 0; i < gridSize; i++) {
+        for (var j = 0; j < gridSize; j++) {
+            if (cellValues[i][j] === 0) {
+                availableCells.push(i * gridSize + j);
+            }
+        }
+    }
+}
+
+function createNewTileItems(isStartup) {
+    var i, sub, nTiles;
+
+    if (isStartup) {
+        nTiles = 2;
+    } else {
+        nTiles = 1;
+    }
+
+    // Popup a new number
+    for (i = 0; i < nTiles; i++) {
+        var oneOrTwo = Math.random() < 0.9 ? 1: 2;
+        var randomCellId = availableCells[Math.floor(Math.random() * availableCells.length)];
+
+        sub = ind2sub(randomCellId);
+        cellValues[sub[0]][sub[1]] = oneOrTwo;
+
+        tileItems[randomCellId] = createTileObject(randomCellId, oneOrTwo, isStartup);
+
+        // Mark this cell as unavailable
+        var idx = availableCells.indexOf(randomCellId);
+        availableCells.splice(idx, 1);
+    }
+}
+
+function ind2sub(ind) {
+    var sub = [0, 0];
+    sub[0] = Math.floor(ind / gridSize);
+    sub[1] = ind % gridSize;
+    return sub;
+}
+
+function createTileObject(ind, n, isStartup) {
+    var tile;
+    var tileText = labelFunc[label](n);
+    var sty = computeTileStyle(n, tileText);
+
+    tile = tileComponent.createObject(tileGrid, {"x": cells.itemAt(ind).x, "y": cells.itemAt(ind).y, "color": sty.bgColor, "tileColor": sty.fgColor, "tileFontSize": sty.fontSize, "tileText": tileText});
+    if (! isStartup) {
+        tile.runNewTileAnim = true;
+    }
+
+    if (tile === null) {
+        console.log("Error creating a new tile");
+    }
+    return tile;
+}
+
+function computeTileStyle(n, tileText) {
+    var fgColors = ["#FF6C00", "#FF6C00"];
+    var bgColors = ["white", "white", "white", "white", "white", "white", "white", "white", "white", "white", "white", "white"];
+    var sty = {bgColor: colors.choose.bggray,
+        fgColor: fgColors[0],
+        fontSize: 55 };
+    if (n > 0) {
+        if (n > 2)
+            sty.fgColor = fgColors[1];
+        if (n <= bgColors.length)
+            sty.bgColor = bgColors[n-1];
+        else
+            sty.bgColor = bgColors[bgColors.length-1];
+    }
+    return sty;
+}
+
