@@ -166,7 +166,6 @@ ApplicationWindow {
                 }
             }
 
-
             MultiPointTouchArea {
                 id: aTouchArea
                 anchors.fill: parent
@@ -208,6 +207,34 @@ ApplicationWindow {
                 }
             }
         }
+
+        MessageDialog {
+            id: lostMsg
+            title: qsTr("Kaybettiniz")
+            text: qsTr("Kaybettiniz!")
+            standardButtons: StandardButton.Retry | StandardButton.Abort
+            onAccepted: {
+                Js.startUp();
+            }
+            onRejected: Js.cleanUpAndQuit();
+        }
+
+        MessageDialog {
+            id: winMsg
+            title: qsTr("Kazandınız")
+            text: qsTr("Kazandınız! Oynamaya devam etmek için Evet'e, Yeni Oyun için Hayır'a basınız")
+            standardButtons: StandardButton.Yes | StandardButton.No
+            onYes: {
+                Js.checkTargetFlag = false;
+                close()
+            }
+            onNo: Js.startUp()
+            onRejected: {
+                Js.checkTargetFlag = false;
+                close()
+            }
+        }
+
     }
     Component.onCompleted: Js.startUp();
 }

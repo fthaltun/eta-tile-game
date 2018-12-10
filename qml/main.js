@@ -161,12 +161,13 @@ function action(m_type) {
             }
             updateScore(oldScore);
             if (checkTargetFlag && maxTileValue() >= targetLevel) {
-                console.log("Win")
+                winMsg.open();
             }
         }
     } else {
         if (isDead()) {
-            console.log("Dead")
+            lostMsg.open();
+            console.log("dead");
         }
     }
 
@@ -409,4 +410,14 @@ function isDead() {
         }
     }
     return dead;
+}
+
+function cleanUpAndQuit() {
+    if (bestScore > settings.value("bestScore", 0)) {
+        console.log("Updating new high score...");
+        settings.setValue("bestScore", bestScore);
+    }
+    if (label !== settings.value("label", "2048"))
+        settings.setValue("label", label);
+    Qt.quit();
 }
