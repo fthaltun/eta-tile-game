@@ -40,7 +40,7 @@ ApplicationWindow {
             color: colors.choose.fglight
         }
 
-        Row {
+        Row{
             anchors.right: parent.right
             y:5
             spacing: 5
@@ -52,6 +52,7 @@ ApplicationWindow {
                     height: 55
                     radius: 3
                     color: colors.choose.bgorange
+                    property string scoreText: (index === 0) ? Js.score.toString() : Js.bestScore.toString()
                     Text {
                         text: (index == 0) ? qsTr("<b>SKOR</b>") : qsTr("<b>EN İYİ SKOR</b>")
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -61,7 +62,7 @@ ApplicationWindow {
                         color: colors.choose.fglight
                     }
                     Text {
-                        text: ""
+                        text: scoreText
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: 25
                         font.family: localFont.name
@@ -71,6 +72,42 @@ ApplicationWindow {
                     }
                 }
             }
+            Text {
+                id: addScoreText
+                font.family: localFont.name
+                font.pixelSize: 25
+                font.bold: true
+                color: Qt.rgba(119/255, 110/255, 101/255, 0.9);
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                property bool runAddScore: false
+                property real yfrom: 0
+                property real yto: -(parent.y + parent.height)
+                property int addScoreAnimTime: 600
+
+                ParallelAnimation {
+                    id: addScoreAnim
+                    running: false
+
+                    NumberAnimation {
+                        target: addScoreText
+                        property: "y"
+                        from: addScoreText.yfrom
+                        to: addScoreText.yto
+                        duration: addScoreText.addScoreAnimTime
+
+                    }
+                    NumberAnimation {
+                        target: addScoreText
+                        property: "opacity"
+                        from: 1
+                        to: 0
+                        duration: addScoreText.addScoreAnimTime
+                    }
+                }
+
+            }
+
         }
 
         Text {

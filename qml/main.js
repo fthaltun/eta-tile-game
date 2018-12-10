@@ -16,7 +16,7 @@ var gridSize = 4;
 var cellValues;
 var tileItems = [];
 var availableCells;
-var targetLevel = 1;
+var targetLevel = 11;
 var checkTargetFlag = true;
 var tileComponent = Qt.createComponent("tile.qml");
 
@@ -52,6 +52,8 @@ function startUp() {
 
     updateAvailableCells();
     createNewTileItems(true);
+    updateScore(0);
+    addScoreText.parent = scoreBoard.itemAt(0);
 
 
     if (bestScore > settings.value("bestScore", 0)) {
@@ -69,6 +71,7 @@ function action(m_type) {
     var isMoved = false;
     var i, j;
     var v, v2, mrg, indices;
+    var oldScore = score;
 
     if (m_type == "right"){
         console.log("swiped right");
@@ -152,6 +155,7 @@ function action(m_type) {
     if (isMoved) {
         updateAvailableCells();
         createNewTileItems(false);
+        updateScore(oldScore);
     }
 
 }
@@ -350,5 +354,25 @@ function moveMergeTilesUpDown(i, v, v2, indices, up) {
     }
 }
 
+function updateScore(oldScore) {
+    if (score > oldScore) {
+        addScoreText.text = "+" + (score-oldScore).toString();
+        addScoreAnim.running = true;
+    }
 
+    scoreBoard.itemAt(0).scoreText = Js.score.toString();
+    scoreBoard.itemAt(1).scoreText = Js.bestScore.toString();
+}
 
+function maxTileValue() {
+    var mv = 0;
+    for (var i = 0; i < gridSize; i++) {
+        for (var j = 0; j < gridSize; j++) {
+            var cv = cellValues[i][j];
+            if ( mv < cv) {
+                mv = cv;
+            }
+        }
+    }
+    return mv;
+}
