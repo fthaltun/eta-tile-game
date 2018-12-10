@@ -200,7 +200,7 @@ ApplicationWindow {
                     Js.diffx = Js.endx - Js.startx;
                     Js.diffy = Js.endy - Js.starty;
                     Js.m_type = ""
-                    if (Math.abs(Js.diffx) > 100 || Math.abs(Js.diffy) > 100) {
+                    if (Math.abs(Js.diffx) > 80 || Math.abs(Js.diffy) > 80) {
                         if (Math.abs(Js.diffx) > Math.abs(Js.diffy)) {
                             if (Js.diffx > 0) {
                                 Js.m_type = "right"
