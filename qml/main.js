@@ -233,8 +233,8 @@ function createTileObject(ind, n, isStartup) {
 }
 
 function computeTileStyle(n, tileText) {
-    var fgColors = ["#FF6C00", "#FF6C00"];
-    var bgColors = ["white", "white", "white", "white", "white", "white", "white", "white", "white", "white", "white", "white"];
+    var fgColors = ["#EEEEEE", "#EEEEEE"];
+    var bgColors = ["#59abe3", "#8bc34a", "#be90d4", "#bcaaa4", "#e91e63", "#006442", "#003171", "#5b3256", "#6c7a89", "#800000", "#795548", "#000000"];
     var sty = {bgColor: colors.choose.bggray,
         fgColor: fgColors[0],
         fontSize: 55 };

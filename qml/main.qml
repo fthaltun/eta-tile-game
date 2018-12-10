@@ -9,7 +9,7 @@ ApplicationWindow {
     visible: true
     width: 550
     height: 740
-    title: qsTr("Eta Tile")
+    title: qsTr("ETA Fayans")
 
     x: (Screen.width - width) / 2
     y: (Screen.height - height) / 2
@@ -33,10 +33,23 @@ ApplicationWindow {
         FontLoader { id: localFont; source: "qrc:///fonts/FiraSans-Regular.ttf" }
         Text {
             id: gameName
+            y:-15
             font.family: localFont.name
-            font.pixelSize: 55
+            font.pixelSize: 47
             font.bold: true
-            text: "ETA TILE"
+            text: "FAYANS"
+            color: colors.choose.fglight
+        }
+        Text {
+            id: gameName1
+            y:35
+            x:47
+            font.family: localFont.name
+            font.pixelSize: 47
+            font.bold: true
+            text: "OYUNU"
+            wrapMode: Text.WordWrap
+            width:45
             color: colors.choose.fglight
         }
 
@@ -54,7 +67,7 @@ ApplicationWindow {
                     color: colors.choose.bgorange
                     property string scoreText: (index === 0) ? Js.score.toString() : Js.bestScore.toString()
                     Text {
-                        text: (index == 0) ? qsTr("<b>SKOR</b>") : qsTr("<b>EN İYİ SKOR</b>")
+                        text: (index == 0) ? qsTr("<b>PUAN</b>") : qsTr("<b>EN İYİ PUAN</b>")
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: 6
                         font.family: localFont.name
@@ -64,7 +77,7 @@ ApplicationWindow {
                     Text {
                         text: scoreText
                         anchors.horizontalCenter: parent.horizontalCenter
-                        y: 25
+                        y: 30
                         font.family: localFont.name
                         font.pixelSize: 15
                         font.bold: true
