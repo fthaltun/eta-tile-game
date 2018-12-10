@@ -3,10 +3,14 @@
 #include <QQmlContext>
 #include <QTranslator>
 #include <QDebug>
+#include <QIcon>
 #include "settings.h"
+
+#define ICONPATH "/usr/share/eta/eta-tile-game/eta-tile-game.svg"
 
 int main(int argc, char *argv[])
 {
+    QApplication::setWindowIcon( QIcon(ICONPATH) );
     QApplication app(argc, argv);
     Settings settings(0, "pardus", "Eta-Tile");
 
