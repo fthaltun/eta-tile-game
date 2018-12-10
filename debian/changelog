@@ -1,3 +1,10 @@
+eta-tile-game (0.1.3) unstable; urgency=medium
+
+  * Fix GUI
+  * Changed action threshold
+
+ -- Fatih Altun <fatih.altun@pardus.org.tr>  Mon, 10 Dec 2018 14:57:09 +0000
+
 eta-tile-game (0.1.2) unstable; urgency=medium
 
   * Add Score
