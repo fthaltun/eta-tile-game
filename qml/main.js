@@ -155,7 +155,19 @@ function action(m_type) {
     if (isMoved) {
         updateAvailableCells();
         createNewTileItems(false);
-        updateScore(oldScore);
+        if (oldScore !== score) {
+            if (bestScore < score) {
+                bestScore = score;
+            }
+            updateScore(oldScore);
+            if (checkTargetFlag && maxTileValue() >= targetLevel) {
+                console.log("Win")
+            }
+        }
+    } else {
+        if (isDead()) {
+            console.log("Dead")
+        }
     }
 
 }
@@ -375,4 +387,26 @@ function maxTileValue() {
         }
     }
     return mv;
+}
+
+function isDead() {
+    var dead = true;
+    for (var i = 0; i < gridSize; i++) {
+        for (var j = 0; j < gridSize; j++) {
+            if (cellValues[i][j] === 0) {
+                dead = false;
+            }
+            if (i > 0) {
+                if (cellValues[i-1][j] === cellValues[i][j]) {
+                    dead = false;
+                }
+            }
+            if (j > 0) {
+                if (cellValues[i][j-1] === cellValues[i][j]) {
+                    dead = false;
+                }
+            }
+        }
+    }
+    return dead;
 }
