@@ -22,6 +22,18 @@ int main(int argc, char *argv[])
         settings.setValue("language", locale);
     }
 
+    QTranslator translator;
+    if (! locale.startsWith("tr")) {
+        QString tsFile = "eta-tile-game_" + locale;
+
+        if (translator.load(tsFile, ":/ts")) {
+            qDebug() << "Successfully loaded " + tsFile;
+            app.installTranslator(&translator);
+        } else {
+            qDebug() << "Failed to load " + tsFile;
+        }
+    }
+
     QQmlApplicationEngine engine;
 
     engine.rootContext()->setContextProperty("settings", &settings);

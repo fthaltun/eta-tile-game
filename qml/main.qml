@@ -9,7 +9,7 @@ ApplicationWindow {
     visible: true
     width: 550
     height: 740
-    title: qsTr("ETA Fayans")
+    title: qsTr("ETA Tile")
 
     x: (Screen.width - width) / 2
     y: (Screen.height - height) / 2
@@ -38,7 +38,7 @@ ApplicationWindow {
             font.family: localFont.name
             font.pixelSize: 47
             font.bold: true
-            text: "FAYANS"
+            text: qsTr("TILE")
             color: colors.choose.fglight
         }
         Text {
@@ -48,7 +48,7 @@ ApplicationWindow {
             font.family: localFont.name
             font.pixelSize: 47
             font.bold: true
-            text: "OYUNU"
+            text: qsTr("GAME")
             wrapMode: Text.WordWrap
             width:45
             color: colors.choose.fglight
@@ -68,7 +68,7 @@ ApplicationWindow {
                     color: colors.choose.bgorange
                     property string scoreText: (index === 0) ? Js.score.toString() : Js.bestScore.toString()
                     Text {
-                        text: (index == 0) ? qsTr("<b>PUAN</b>") : qsTr("<b>EN İYİ PUAN</b>")
+                        text: (index == 0) ? qsTr("<b>SCORE</b>") : qsTr("<b>BEST</b>")
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: 6
                         font.family: localFont.name
@@ -128,7 +128,7 @@ ApplicationWindow {
             id: banner
             y:110
             height: 40
-            text: qsTr("<b>Sayıları birleştir ve 2048 sayısını elde et !</b>")
+            text: qsTr("<b>Join the numbers and get to the 2048 tile!</b>")
             color: colors.choose.fglight
             font.family: localFont.name
             font.pixelSize: 16
@@ -145,7 +145,7 @@ ApplicationWindow {
                     radius: 3
                     Text{
                         anchors.centerIn: parent
-                        text: qsTr("Yeni Oyun")
+                        text: qsTr("New Game")
                         color: colors.choose.fglight
                         font.family: localFont.name
                         font.pixelSize: 18
@@ -224,8 +224,8 @@ ApplicationWindow {
 
         MessageDialog {
             id: lostMsg
-            title: qsTr("Kaybettiniz")
-            text: qsTr("Kaybettiniz!")
+            title: qsTr("Game Over")
+            text: qsTr("Game Over!")
             standardButtons: StandardButton.Retry | StandardButton.Abort
             onAccepted: {
                 Js.startUp();
@@ -235,8 +235,8 @@ ApplicationWindow {
 
         MessageDialog {
             id: winMsg
-            title: qsTr("Kazandınız")
-            text: qsTr("Kazandınız! Oynamaya devam etmek için Evet'e, Yeni Oyun için Hayır'a basınız")
+            title: qsTr("You Win")
+            text: qsTr("You win! Continue playing?")
             standardButtons: StandardButton.Yes | StandardButton.No
             onYes: {
                 Js.checkTargetFlag = false;
