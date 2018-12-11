@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>fonts/FiraSans-Regular.ttf</file>
+        <file>ts/eta-tile-game_tr_TR.qm</file>
         <file>qml/main.qml</file>
         <file>qml/tile.qml</file>
         <file>qml/main.js</file>

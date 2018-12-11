@@ -19,7 +19,7 @@ RESOURCES += qml.qrc
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
-TRANSLATIONS = ts/2048-qt_tr_TR.ts
+TRANSLATIONS = ts/eta-tile-game_tr_TR.ts
 
 icon.files = eta-tile-game.svg
 icon.commands = mkdir -p /usr/share/eta/eta-tile-game

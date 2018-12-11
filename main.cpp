@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     }
 
     QTranslator translator;
-    if (! locale.startsWith("tr")) {
+    if (! locale.startsWith("en")) {
         QString tsFile = "eta-tile-game_" + locale;
 
         if (translator.load(tsFile, ":/ts")) {
