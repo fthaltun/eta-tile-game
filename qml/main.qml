@@ -1,7 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.1
-import QtQuick.Dialogs 1.1
+import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 import "main.js" as Js
 
@@ -222,33 +222,157 @@ ApplicationWindow {
             }
         }
 
-        MessageDialog {
+        Dialog {
             id: lostMsg
+            visible: false
             title: qsTr("Game Over")
-            text: qsTr("Game Over!")
-            standardButtons: StandardButton.Retry | StandardButton.Abort
-            onAccepted: {
-                Js.startUp();
+            contentItem: Rectangle {
+                color: colors.choose.bggray
+                implicitWidth: 500
+                implicitHeight: 120
+                Text {
+                    text: qsTr("Game Over!")
+                    color: colors.choose.bgorange
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    y:20
+                    font.bold: true
+                    font.pixelSize: 20
+                }
+                Button {
+                    width: 130
+                    height: 40
+                    anchors.bottomMargin: 15
+                    anchors.bottom: parent.bottom
+                    x:80
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: colors.choose.bgorange
+                            radius: 3
+                            Text{
+                                anchors.centerIn: parent
+                                text: qsTr("Retry")
+                                color: colors.choose.fglight
+                                font.family: localFont.name
+                                font.pixelSize: 18
+                                font.bold: true
+                            }
+                        }
+                    }
+                    onClicked: {
+                        Js.startUp();
+                        lostMsg.close();
+                    }
+                }
+                Button {
+                    width: 130
+                    height: 40
+                    x:290
+                    anchors.bottomMargin: 15
+                    anchors.bottom: parent.bottom
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: colors.choose.bgorange
+                            radius: 3
+                            Text{
+                                anchors.centerIn: parent
+                                text: qsTr("Exit")
+                                color: colors.choose.fglight
+                                font.family: localFont.name
+                                font.pixelSize: 18
+                                font.bold: true
+                            }
+                        }
+                    }
+                    onClicked: {
+                        Qt.quit();
+                    }
+                }
             }
-            onRejected: Js.cleanUpAndQuit();
         }
 
-        MessageDialog {
+        Dialog {
             id: winMsg
+            visible: false
             title: qsTr("You Win")
-            text: qsTr("You win! Continue playing?")
-            standardButtons: StandardButton.Yes | StandardButton.No
-            onYes: {
-                Js.checkTargetFlag = false;
-                close()
+            onVisibleChanged: {
+                if ( !this.visible ) {
+                    Js.checkTargetFlag = false;
+                }
             }
-            onNo: Js.startUp()
-            onRejected: {
-                Js.checkTargetFlag = false;
-                close()
+            contentItem: Rectangle {
+                color: colors.choose.bggray
+                implicitWidth: 500
+                implicitHeight: 120
+                Text {
+                    text: qsTr("You win!")
+                    color: colors.choose.bgorange
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    y:5
+                    font.bold: true
+                    font.pixelSize: 20
+                }
+                Text {
+                    text: qsTr("Continue playing?")
+                    color: colors.choose.bgorange
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    y:30
+                    font.bold: true
+                    font.pixelSize: 20
+                }
+                Button {
+                    width: 130
+                    height: 40
+                    anchors.bottomMargin: 13
+                    anchors.bottom: parent.bottom
+                    x:80
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: colors.choose.bgorange
+                            radius: 3
+                            Text{
+                                anchors.centerIn: parent
+                                text: qsTr("Yes")
+                                color: colors.choose.fglight
+                                font.family: localFont.name
+                                font.pixelSize: 18
+                                font.bold: true
+                            }
+                        }
+                    }
+                    onClicked: {
+                        Js.checkTargetFlag = false;
+                        winMsg.close();
+                    }
+                }
+                Button {
+                    width: 130
+                    height: 40
+                    x:290
+                    anchors.bottomMargin: 13
+                    anchors.bottom: parent.bottom
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: colors.choose.bgorange
+                            radius: 3
+                            Text{
+                                anchors.centerIn: parent
+                                text: qsTr("No")
+                                color: colors.choose.fglight
+                                font.family: localFont.name
+                                font.pixelSize: 18
+                                font.bold: true
+                            }
+                        }
+                    }
+                    onClicked: {
+                        winMsg.close();
+                        Js.startUp()
+                    }
+                }
+
+
             }
         }
-
     }
     Component.onCompleted: Js.startUp();
 }
