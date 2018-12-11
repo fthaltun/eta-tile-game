@@ -30,6 +30,7 @@ ApplicationWindow {
         height: 700
         anchors.centerIn: parent
         focus: true
+        Keys.onPressed: Js.action(event)
         FontLoader { id: localFont; source: "qrc:///fonts/FiraSans-Regular.ttf" }
         Text {
             id: gameName

@@ -73,7 +73,7 @@ function action(m_type) {
     var v, v2, mrg, indices;
     var oldScore = score;
 
-    if (m_type == "right"){
+    if (m_type === "right" || m_type.key === Qt.Key_Right){
         console.log("swiped right");
         for (i = 0; i < gridSize; i++) {
             v = cellValues[i].slice();
@@ -93,9 +93,10 @@ function action(m_type) {
                 cellValues[i] = v2;
             }
         }
+        m_type.accepted = true;
     }
 
-    else if (m_type == "left") {
+    else if (m_type === "left" || m_type.key === Qt.Key_Left) {
         console.log("swiped left");
         for (i = 0; i < gridSize; i++) {
             v = cellValues[i];
@@ -109,9 +110,10 @@ function action(m_type) {
                 cellValues[i] = v2;
             }
         }
+        m_type.accepted = true;
     }
 
-    else if (m_type == "up") {
+    else if (m_type === "up"  || m_type.key === Qt.Key_Up) {
         console.log("swiped up");
         for (i = 0; i < gridSize; i++) {
             v = cellValues.map(function(row) {return row[i];});
@@ -127,9 +129,10 @@ function action(m_type) {
                 }
             }
         }
+        m_type.accepted = true;
     }
 
-    else if (m_type == "down") {
+    else if (m_type === "down"  || m_type.key === Qt.Key_Down) {
         console.log("swiped down");
         for (i = 0; i < gridSize; i++) {
             v = cellValues.map(function(row) {return row[i];});
@@ -150,6 +153,7 @@ function action(m_type) {
                 moveMergeTilesUpDown(i, v, v2, indices, false);
             }
         }
+        m_type.accepted = true;
     }
 
     if (isMoved) {
@@ -167,7 +171,6 @@ function action(m_type) {
     } else {
         if (isDead()) {
             lostMsg.open();
-            console.log("dead");
         }
     }
 
