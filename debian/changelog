@@ -1,3 +1,9 @@
+eta-tile-game (0.1.5) unstable; urgency=medium
+
+  * Move files to new directories
+
+ -- Fatih Altun <fatih.altun@pardus.org.tr>  Wed, 12 Dec 2018 09:06:40 +0000
+
 eta-tile-game (0.1.4) unstable; urgency=medium
 
   * Fix icon
