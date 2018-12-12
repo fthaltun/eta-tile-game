@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     if (! locale.startsWith("en")) {
         QString tsFile = "eta-tile-game_" + locale;
 
-        if (translator.load(tsFile, ":/ts")) {
+        if (translator.load(tsFile, ":/translations")) {
             qDebug() << "Successfully loaded " + tsFile;
             app.installTranslator(&translator);
         } else {
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("settings", &settings);
 
-    engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:///ui/main.qml")));
 
     return app.exec();
 }

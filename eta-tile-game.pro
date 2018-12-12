@@ -2,24 +2,26 @@ TEMPLATE = app
 
 QT += qml quick widgets
 
-SOURCES += main.cpp \
-    settings.cpp
+SOURCES += src/main.cpp \
+    src/settings.cpp
 
 lupdate_only {
-SOURCES += qml/main.qml \
-           qml/tile.qml \
-           qml/main.js
+SOURCES += ui/main.qml \
+           ui/tile.qml \
+           js/main.js
 }
 
 HEADERS += \
-    settings.h
+    src/settings.h
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    fonts.qrc \
+    translations.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
-TRANSLATIONS = ts/eta-tile-game_tr_TR.ts
+TRANSLATIONS = translations/eta-tile-game_tr_TR.ts
 
 icon.files = eta-tile-game.svg
 icon.commands = mkdir -p /usr/share/eta/eta-tile-game

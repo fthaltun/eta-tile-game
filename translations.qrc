@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>translations/eta-tile-game_tr_TR.qm</file>
+    </qresource>
+</RCC>
+

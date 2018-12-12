@@ -18,7 +18,7 @@ var tileItems = [];
 var availableCells;
 var targetLevel = 11;
 var checkTargetFlag = true;
-var tileComponent = Qt.createComponent("tile.qml");
+var tileComponent = Qt.createComponent("../ui/tile.qml");
 
 var label = settings.value("label", "2048");
 var labelFunc = {

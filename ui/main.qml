@@ -3,7 +3,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
-import "main.js" as Js
+import "../js/main.js" as Js
 
 ApplicationWindow {
     visible: true
