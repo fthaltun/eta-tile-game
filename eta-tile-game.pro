@@ -27,8 +27,12 @@ icon.files = eta-tile-game.svg
 icon.commands = mkdir -p /usr/share/eta/eta-tile-game
 icon.path = /usr/share/eta/eta-tile-game/
 
+desktop_file.files = eta-tile-game.desktop
+desktop_file.path = /usr/share/applications/
+
+
 TARGET = eta-tile-game
 
 target.path = /usr/bin/
 
-INSTALLS += target icon
+INSTALLS += target desktop_file icon

@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=0.1.5
+Name=ETA Tile Game
+Name[tr]=ETA Fayans Oyunu
+Type=Application
+Comment=2048 game for ETA
+Comment[tr]=ETA için geliştirilmiş klasik 2048 oyunu
+Terminal=false
+Exec=eta-tile-game
+Icon=/usr/share/eta/eta-tile-game/eta-tile-game.svg
+Categories=Game
+Keywords=game;puzzle;2048;tile
+GenericName=Tile Game
+GenericName[tr]=Fayans Oyunu
+
