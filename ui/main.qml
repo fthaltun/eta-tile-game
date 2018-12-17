@@ -9,7 +9,11 @@ ApplicationWindow {
     visible: true
     width: 550
     height: 740
-    title: qsTr("ETA Tile")
+    minimumWidth: 550
+    minimumHeight: 740
+    maximumWidth: 550
+    maximumHeight: 740
+    title: qsTr("ETA Tile Game")
 
     x: (Screen.width - width) / 2
     y: (Screen.height - height) / 2
