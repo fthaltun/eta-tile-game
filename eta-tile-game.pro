@@ -6,9 +6,7 @@ SOURCES += src/main.cpp \
     src/settings.cpp
 
 lupdate_only {
-SOURCES += ui/main.qml \
-           ui/tile.qml \
-           js/main.js
+SOURCES += ui/main.qml
 }
 
 HEADERS += \

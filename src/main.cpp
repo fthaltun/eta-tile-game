@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 {
     QApplication::setWindowIcon( QIcon(ICONPATH) );
     QApplication app(argc, argv);
-    Settings settings(0, "pardus", "Eta-Tile");
+    Settings settings(0, "pardus", "Eta-Tile-Game");
 
     QString locale;
     if (settings.contains("language")) {
