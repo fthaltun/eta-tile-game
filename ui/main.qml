@@ -431,13 +431,54 @@ ApplicationWindow {
 
         Rectangle {
             id:header2
-            color:"brown"
+            color:colors.choose.pardus_gray
             width:cover.width-2*myMargin
             height:root.height/9
             anchors{
                 top:header1.bottom
                 topMargin: myMargin
                 horizontalCenter: parent.horizontalCenter
+            }
+            Text {
+                id: banner
+                anchors{
+                    verticalCenter: header2.verticalCenter
+                    left:header2.left
+                    leftMargin: myMargin
+                }
+                text: qsTr("Join the numbers and get to the 2048 tile!")
+                color: colors.choose.pardus_white
+                font.family: firaFont.name
+                font.pixelSize: root.height/41
+                font.bold: true
+            }
+
+            Button {
+                width: root.width/4
+                height: root.height/15
+                anchors{
+                    verticalCenter:header2.verticalCenter
+                    right: header2.right
+                    rightMargin: myMargin
+                }
+                style: ButtonStyle {
+                    background: Rectangle {
+                        color: colors.choose.pardus_orange
+                        radius: 3
+                        Text{
+                            anchors.centerIn: parent
+                            text: qsTr("New Game")
+                            color: colors.choose.pardus_white
+                            font.family: firaFont.name
+                            font.pixelSize: root.height/35
+                            font.bold: true
+                        }
+                    }
+                }
+                onClicked: {
+                    purge()
+
+                }
             }
         }
 
@@ -518,7 +559,7 @@ ApplicationWindow {
 
         MultiPointTouchArea {
             id: aTouchArea
-            anchors.fill: parent
+            anchors.fill: canvas
             minimumTouchPoints: 1
             maximumTouchPoints: 1
 
