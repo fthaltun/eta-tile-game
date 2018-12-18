@@ -410,6 +410,57 @@ ApplicationWindow {
             }
         }
 
+        MultiPointTouchArea {
+            id: aTouchArea
+            anchors.fill: parent
+            minimumTouchPoints: 1
+            maximumTouchPoints: 1
+
+            property real startx:0
+            property real starty:0
+            property real endx:0
+            property real endy:0
+            property real diffx:0
+            property real diffy:0
+
+            onTouchUpdated: {
+
+                for (var i=0;i<touchPoints.length; i++)
+                {
+                    var touch = touchPoints[i];
+                    startx = touch.startX
+                    endx = touch.x
+                    starty = touch.startY
+                    endy = touch.y
+                }
+            }
+
+            onReleased: {
+                diffx = endx - startx;
+                diffy = endy - starty;
+                if (Math.abs(diffx) > 80 || Math.abs(diffy) > 80) {
+                    if (Math.abs(diffx) > Math.abs(diffy)) {
+                        if (diffx > 0) {
+                            root.move(1, 0)
+                            console.log("r")
+                        } else {
+                            root.move(-1, 0)
+                            console.log("l")
+                        }
+                    }
+                    else {
+                        if (diffy > 0) {
+                            root.move(0, 1)
+                            console.log("d")
+                        } else {
+                            root.move(0, -1)
+                            console.log("t")
+                        }
+                    }
+                }
+            }
+        }
+
         Component.onCompleted: {
             root.purge()
         }
