@@ -182,6 +182,11 @@ ApplicationWindow {
         gen2();
         updateScore(0);
         addScoreText.parent = scorePanel.itemAt(0);
+
+        if (bestScore > settings.value("bestScore", 0)) {
+            console.log("New best score : " + bestScore);
+            settings.setValue("bestScore", bestScore);
+        }
     }
     function checkNotStuck() {
         for (var i = 0; i < root.cols; i++) {
@@ -213,8 +218,13 @@ ApplicationWindow {
             addScoreAnim.running = true;
         }
 
-        scorePanel.itemAt(0).scoreText = score.toString();
-        scorePanel.itemAt(1).scoreText = "";
+        if (bestScore > settings.value("bestScore", 0)) {
+            console.log("New best score : "+ bestScore);
+            settings.setValue("bestScore", bestScore);
+        }
+
+        scorePanel.itemAt(0).scoreText = score;
+        scorePanel.itemAt(1).scoreText = bestScore;
     }
 
     function move(col, row) {
@@ -314,6 +324,9 @@ ApplicationWindow {
         if (somethingMoved){
             gen2()
             if (oldScore !== score) {
+                if (bestScore < score) {
+                    bestScore = score;
+                }
                 updateScore(oldScore);
             }
         }
@@ -375,7 +388,7 @@ ApplicationWindow {
                         height: root.height/11
                         radius: 3
                         color: colors.choose.pardus_orange
-                        property string scoreText: (index === 0) ? root.score : "0"
+                        property string scoreText: (index === 0) ? score : bestScore
                         Text {
                             text: (index == 0) ? qsTr("<b>SCORE</b>") : qsTr("<b>BEST</b>")
                             anchors.horizontalCenter: parent.horizontalCenter
