@@ -35,25 +35,26 @@ ApplicationWindow {
     property int finalValue: 512
     property bool targetFlag: true
     property int score: 0
+    property var bestScore : settings.value("bestScore", 0);
 
     Component {
         id: number
 
         Rectangle {
             id: colorRect
-            color: number <=    1 ? "white" :
-                   number <=    2 ? "#59abe3" :
-                   number <=    4 ? "#8bc34a" :
-                   number <=    8 ? "#be90d4" :
-                   number <=   16 ? "#bcaaa4" :
-                   number <=   32 ? "#e91e63" :
-                   number <=   64 ? "#006442" :
-                   number <=  128 ? "#003171" :
-                   number <=  256 ? "#5b3256" :
-                   number <=  512 ? "#6c7a89" :
-                   number <= 1024 ? "#800000" :
-                   number <= 2048 ? "#795548" :
-                   "#000000"
+            color:  number <=    1 ? "white" :
+                    number <=    2 ? "#59abe3" :
+                    number <=    4 ? "#8bc34a" :
+                    number <=    8 ? "#be90d4" :
+                    number <=   16 ? "#bcaaa4" :
+                    number <=   32 ? "#e91e63" :
+                    number <=   64 ? "#006442" :
+                    number <=  128 ? "#003171" :
+                    number <=  256 ? "#5b3256" :
+                    number <=  512 ? "#6c7a89" :
+                    number <= 1024 ? "#795548" :
+                    number <= 2048 ? "#800000" :
+                                     "#000000"
 
             property int col
             property int row
@@ -67,12 +68,12 @@ ApplicationWindow {
             radius: cells.getAt(col, row).radius
 
             function move(h, v) {
-                if (h == col && v == row)
+                if (h === col && v === row)
                     return false
                 if (numberAt(h, v)) {
                     number += numberAt(h, v).number
                     score += number
-                    if (number == finalValue){
+                    if (number === finalValue){
                         root.victory()
                     }
                     root.popNumberAt(h, v)
@@ -84,18 +85,17 @@ ApplicationWindow {
 
             Text {
                 id: text
-
                 width: parent.width * 0.9
                 height: parent.height * 0.9
                 anchors.centerIn: parent
                 smooth: true
+                color:colors.choose.pardus_white
                 font.family: firaFont.name
                 font.pixelSize: parent.height /2
                 fontSizeMode: Text.Fit
                 font.bold: true
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-
                 text: parent.number > 1 ? parent.number : ""
             }
 
@@ -149,14 +149,14 @@ ApplicationWindow {
 
     function numberAt(col, row) {
         for (var i = 0; i < numbers.length; i++) {
-            if (numbers[i].col == col && numbers[i].row == row)
+            if (numbers[i].col === col && numbers[i].row === row)
                 return numbers[i]
         }
     }
     function popNumberAt(col, row) {
         var tmp = numbers
         for (var i = 0; i < tmp.length; i++) {
-            if (tmp[i].col == col && tmp[i].row == row) {
+            if (tmp[i].col === col && tmp[i].row === row) {
                 tmp[i].destroy()
                 tmp.splice(i, 1)
             }
@@ -188,13 +188,13 @@ ApplicationWindow {
             for (var j = 0; j < root.rows; j++) {
                 if (!numberAt(i, j))
                     return true
-                if (numberAt(i+1,j) && numberAt(i,j).number == numberAt(i+1,j).number)
+                if (numberAt(i+1,j) && numberAt(i,j).number === numberAt(i+1,j).number)
                     return true
-                if (numberAt(i-1,j) && numberAt(i,j).number == numberAt(i-1,j).number)
+                if (numberAt(i-1,j) && numberAt(i,j).number === numberAt(i-1,j).number)
                     return true
-                if (numberAt(i,j+1) && numberAt(i,j).number == numberAt(i,j+1).number)
+                if (numberAt(i,j+1) && numberAt(i,j).number === numberAt(i,j+1).number)
                     return true
-                if (numberAt(i,j-1) && numberAt(i,j).number == numberAt(i,j-1).number)
+                if (numberAt(i,j-1) && numberAt(i,j).number === numberAt(i,j-1).number)
                     return true
             }
         }
@@ -221,14 +221,16 @@ ApplicationWindow {
         var somethingMoved = false
         var tmp = numbers
         var oldScore = score;
+        var filled
+        var canMerge
         if (col > 0) {
             for (var j = 0; j < root.rows; j++) {
-                var filled = 0
-                var canMerge = false
+                filled = 0
+                canMerge = false
                 for (var i = root.cols - 1; i >= 0; i--) {
                     if (numberAt(i,j)) {
                         if (canMerge) {
-                            if (numberAt(i,j).number == numberAt(root.cols-filled,j).number) {
+                            if (numberAt(i,j).number === numberAt(root.cols-filled,j).number) {
                                 canMerge = false
                                 filled--
                             }
@@ -245,12 +247,12 @@ ApplicationWindow {
         }
         if (col < 0) {
             for (var j = 0; j < root.rows; j++) {
-                var filled = 0
-                var canMerge = false
+                filled = 0
+                canMerge = false
                 for (var i = 0; i < root.cols; i++) {
                     if (numberAt(i,j)) {
                         if (canMerge) {
-                            if (numberAt(i,j).number == numberAt(filled-1,j).number) {
+                            if (numberAt(i,j).number === numberAt(filled-1,j).number) {
                                 canMerge = false
                                 filled--
                             }
@@ -267,12 +269,12 @@ ApplicationWindow {
         }
         if (row > 0) {
             for (var i = 0; i < root.cols; i++) {
-                var filled = 0
-                var canMerge = false
+                filled = 0
+                canMerge = false
                 for (var j = root.rows - 1; j >= 0; j--) {
                     if (numberAt(i,j)) {
                         if (canMerge) {
-                            if (numberAt(i,j).number == numberAt(i,root.rows-filled).number) {
+                            if (numberAt(i,j).number === numberAt(i,root.rows-filled).number) {
                                 canMerge = false
                                 filled--
                             }
@@ -289,12 +291,12 @@ ApplicationWindow {
         }
         if (row < 0) {
             for (var i = 0; i < root.cols; i++) {
-                var filled = 0
-                var canMerge = false
+                filled = 0
+                canMerge = false
                 for (var j = 0; j < root.rows; j++) {
                     if (numberAt(i,j)) {
                         if (canMerge) {
-                            if (numberAt(i,j).number == numberAt(i,filled-1).number) {
+                            if (numberAt(i,j).number === numberAt(i,filled-1).number) {
                                 canMerge = false
                                 filled--
                             }
@@ -356,7 +358,6 @@ ApplicationWindow {
                     wrapMode: Text.WordWrap
                     width:root.width/2.3
                 }
-
             }
 
             Row{
@@ -477,7 +478,6 @@ ApplicationWindow {
                 }
                 onClicked: {
                     purge()
-
                 }
             }
         }
@@ -489,7 +489,6 @@ ApplicationWindow {
             width: height
             radius: 10
             focus: true
-
             anchors{
                 top:header2.bottom
                 topMargin: myMargin
@@ -543,16 +542,16 @@ ApplicationWindow {
 
         Keys.onPressed: {
 
-                if (event.key == Qt.Key_Left)
-                    root.move(-1, 0)
-                if (event.key == Qt.Key_Right)
-                    root.move(1, 0)
-                if (event.key == Qt.Key_Up)
-                    root.move(0, -1)
-                if (event.key == Qt.Key_Down)
-                    root.move(0, 1)
+            if (event.key === Qt.Key_Left)
+                root.move(-1, 0)
+            if (event.key === Qt.Key_Right)
+                root.move(1, 0)
+            if (event.key === Qt.Key_Up)
+                root.move(0, -1)
+            if (event.key === Qt.Key_Down)
+                root.move(0, 1)
 
-            if (event.key == Qt.Key_Space) {
+            if (event.key === Qt.Key_Space) {
                 root.purge()
             }
         }
@@ -589,25 +588,20 @@ ApplicationWindow {
                     if (Math.abs(diffx) > Math.abs(diffy)) {
                         if (diffx > 0) {
                             root.move(1, 0)
-                            console.log("r")
                         } else {
                             root.move(-1, 0)
-                            console.log("l")
                         }
                     }
                     else {
                         if (diffy > 0) {
                             root.move(0, 1)
-                            console.log("d")
                         } else {
                             root.move(0, -1)
-                            console.log("t")
                         }
                     }
                 }
             }
         }
-
         Component.onCompleted: {
             root.purge()
         }
