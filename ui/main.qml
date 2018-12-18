@@ -36,9 +36,6 @@ ApplicationWindow {
     property bool targetFlag: true
     property int score: 0
 
-
-
-
     Component {
         id: number
 
@@ -149,9 +146,6 @@ ApplicationWindow {
             }
         }
     }
-
-
-
 
     function numberAt(col, row) {
         for (var i = 0; i < numbers.length; i++) {
@@ -347,6 +341,7 @@ ApplicationWindow {
             height:root.height-header1.height-header2.height-4*myMargin <= cover.width-2*myMargin ? root.height-header1.height-header2.height-4*myMargin : cover.width-2*myMargin
             width: height
             radius: 10
+            focus: true
 
             anchors{
                 top:header2.bottom
@@ -363,7 +358,6 @@ ApplicationWindow {
                 rows: root.rows
                 columns: root.cols
                 spacing: (parent.width + parent.height) / root.rows / root.cols / 4
-
 
                 property real cellWidth: (width - (columns - 1) * spacing) / columns
                 property real cellHeight: (height - (rows - 1) * spacing) / rows
@@ -393,22 +387,31 @@ ApplicationWindow {
                         height: parent.cellHeight
                         color: colors.choose.pardus_gray
                         radius: 10
-
                         property int col : index % root.cols
                         property int row : index / root.cols
                     }
                 }
-            }//grid
+            }
         }
 
+        Keys.onPressed: {
 
+                if (event.key == Qt.Key_Left)
+                    root.move(-1, 0)
+                if (event.key == Qt.Key_Right)
+                    root.move(1, 0)
+                if (event.key == Qt.Key_Up)
+                    root.move(0, -1)
+                if (event.key == Qt.Key_Down)
+                    root.move(0, 1)
 
-
+            if (event.key == Qt.Key_Space) {
+                root.purge()
+            }
+        }
 
         Component.onCompleted: {
             root.purge()
         }
-
     }
-
 }
