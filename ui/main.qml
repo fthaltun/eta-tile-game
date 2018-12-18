@@ -69,10 +69,10 @@ ApplicationWindow {
             function move(h, v) {
                 if (h == col && v == row)
                     return false
-                if (root.numberAt(h, v)) {
-                    number += root.numberAt(h, v).number
-                    root.score += number
-                    if (number == root.finalValue){
+                if (numberAt(h, v)) {
+                    number += numberAt(h, v).number
+                    score += number
+                    if (number == finalValue){
                         root.victory()
                     }
                     root.popNumberAt(h, v)
@@ -180,6 +180,8 @@ ApplicationWindow {
         numbers = tmp
         gen2();
         gen2();
+        updateScore(0);
+        addScoreText.parent = scorePanel.itemAt(0);
     }
     function checkNotStuck() {
         for (var i = 0; i < root.cols; i++) {
@@ -205,9 +207,20 @@ ApplicationWindow {
         console.log("you lost")
     }
 
+    function updateScore(oldScore) {
+        if (score > oldScore) {
+            addScoreText.text = "+" + (score-oldScore).toString();
+            addScoreAnim.running = true;
+        }
+
+        scorePanel.itemAt(0).scoreText = score.toString();
+        scorePanel.itemAt(1).scoreText = "";
+    }
+
     function move(col, row) {
         var somethingMoved = false
         var tmp = numbers
+        var oldScore = score;
         if (col > 0) {
             for (var j = 0; j < root.rows; j++) {
                 var filled = 0
@@ -298,6 +311,9 @@ ApplicationWindow {
         }
         if (somethingMoved){
             gen2()
+            if (oldScore !== score) {
+                updateScore(oldScore);
+            }
         }
         if (!checkNotStuck()){
             root.defeat()
@@ -313,7 +329,7 @@ ApplicationWindow {
 
         Rectangle {
             id:header1
-            color:"brown"
+            color:colors.choose.pardus_gray
             width:cover.width-2*myMargin
             height:root.height/6
             anchors{
@@ -321,13 +337,103 @@ ApplicationWindow {
                 topMargin: myMargin
                 horizontalCenter: parent.horizontalCenter
             }
+
+            Row{
+                anchors{
+                    leftMargin: myMargin
+                    verticalCenter:header1.verticalCenter
+                    left:header1.left
+
+                }
+
+                Text {
+                    id: gameName
+                    font.family: firaFont.name
+                    font.pixelSize: root.height/13
+                    font.bold: true
+                    text: qsTr("TILE GAME")
+                    color: colors.choose.pardus_orange
+                    wrapMode: Text.WordWrap
+                    width:root.width/2.3
+                }
+
+            }
+
+            Row{
+                anchors{
+                    verticalCenter:header1.verticalCenter
+                    right: header1.right
+                    rightMargin: myMargin
+                }
+                spacing: myMargin
+                Repeater {
+                    id: scorePanel
+                    model: 2
+                    Rectangle {
+                        width: (index == 0) ? root.width/4 : root.width/4
+                        height: root.height/11
+                        radius: 3
+                        color: colors.choose.pardus_orange
+                        property string scoreText: (index === 0) ? root.score : "0"
+                        Text {
+                            text: (index == 0) ? qsTr("<b>SCORE</b>") : qsTr("<b>BEST</b>")
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            y: root.height/120
+                            font.family: firaFont.name
+                            font.pixelSize: root.height/33
+                            color: colors.choose.pardus_white
+                        }
+                        Text {
+                            text: scoreText
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            y: root.height/21
+                            font.family: firaFont.name
+                            font.pixelSize: root.height/35
+                            font.bold: true
+                            color: "white"
+                        }
+                    }
+                }
+                Text {
+                    id: addScoreText
+                    font.family: firaFont.name
+                    font.pixelSize: root.height/20
+                    font.bold: true
+                    color: Qt.rgba(119/255, 110/255, 101/255, 0.9);
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    property bool runAddScore: false
+                    property real yfrom: 0
+                    property real yto: -(parent.y + parent.height)
+                    property int addScoreAnimTime: 600
+
+                    ParallelAnimation {
+                        id: addScoreAnim
+                        running: false
+                        NumberAnimation {
+                            target: addScoreText
+                            property: "y"
+                            from: addScoreText.yfrom
+                            to: addScoreText.yto
+                            duration: addScoreText.addScoreAnimTime
+                        }
+                        NumberAnimation {
+                            target: addScoreText
+                            property: "opacity"
+                            from: 1
+                            to: 0
+                            duration: addScoreText.addScoreAnimTime
+                        }
+                    }
+                }
+            }
         }
 
         Rectangle {
             id:header2
             color:"brown"
             width:cover.width-2*myMargin
-            height:root.height/10
+            height:root.height/9
             anchors{
                 top:header1.bottom
                 topMargin: myMargin
