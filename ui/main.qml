@@ -32,7 +32,7 @@ ApplicationWindow {
     property variant numbers: []
     property int cols: 4
     property int rows: 4
-    property int finalValue: 512
+    property int finalValue: 2048
     property bool targetFlag: true
     property int score: 0
     property var bestScore : settings.value("bestScore", 0);
@@ -73,7 +73,7 @@ ApplicationWindow {
                 if (numberAt(h, v)) {
                     number += numberAt(h, v).number
                     score += number
-                    if (number === finalValue){
+                    if (number === finalValue && targetFlag === true){
                         root.victory()
                     }
                     root.popNumberAt(h, v)
@@ -172,6 +172,7 @@ ApplicationWindow {
     }
     function purge() {
         score = 0
+        targetFlag = true
         var tmp = numbers
         for (var i = 0; i < tmp.length; i++) {
             tmp[i].destroy()
@@ -187,6 +188,7 @@ ApplicationWindow {
             console.log("New best score : " + bestScore);
             settings.setValue("bestScore", bestScore);
         }
+        console.log("Started a new game")
     }
     function checkNotStuck() {
         for (var i = 0; i < root.cols; i++) {
@@ -206,10 +208,10 @@ ApplicationWindow {
         return false
     }
     function victory() {
-        console.log("you win")
+        winMsg.show()
     }
     function defeat() {
-        console.log("you lost")
+        lostMsg.show()
     }
 
     function updateScore(oldScore) {
@@ -390,12 +392,13 @@ ApplicationWindow {
                         color: colors.choose.pardus_orange
                         property string scoreText: (index === 0) ? score : bestScore
                         Text {
-                            text: (index == 0) ? qsTr("<b>SCORE</b>") : qsTr("<b>BEST</b>")
+                            text: (index == 0) ? qsTr("SCORE") : qsTr("BEST")
                             anchors.horizontalCenter: parent.horizontalCenter
                             y: root.height/120
                             font.family: firaFont.name
                             font.pixelSize: root.height/33
                             color: colors.choose.pardus_white
+                            font.bold: true
                         }
                         Text {
                             text: scoreText
@@ -463,11 +466,12 @@ ApplicationWindow {
                 text: qsTr("Join the numbers and get to the 2048 tile!")
                 color: colors.choose.pardus_white
                 font.family: firaFont.name
-                font.pixelSize: root.height/41
+                font.pixelSize: header2.height/4.5
                 font.bold: true
             }
 
             Button {
+                id:ngButton
                 width: root.width/4
                 height: root.height/15
                 anchors{
@@ -553,18 +557,246 @@ ApplicationWindow {
             }
         }
 
+        Rectangle {
+            id: winMsg
+            width: root.width
+            height: root.height
+            anchors.centerIn: parent
+            opacity: 0.0
+            color: "black"
+            visible: false
+            z: 1
+            function hide() {
+                visible = false
+                opacity = 0.0
+                ngButton.enabled = true
+            }
+            function show(text) {
+                visible = true
+                opacity = 0.8
+                ngButton.enabled = false
+            }
+            Rectangle {
+                id:wblck
+                anchors.centerIn: parent
+                width: cellGrid.width
+                height: cellGrid.height/2
+                color: "black"
+                Rectangle {
+                    anchors.fill: parent
+                    width: parent.width
+                    height: parent.height
+                    color: colors.choose.pardus_gray
+                    radius:10
+                    Text {
+                        text: qsTr("Congratulations")
+                        color: colors.choose.pardus_white
+                        font.family: firaFont.name
+                        anchors{
+                            horizontalCenter: parent.horizontalCenter
+                            top:parent.top
+                            topMargin: myMargin
+                        }
+                        font.bold: true
+                        font.pixelSize: parent.height * 0.1
+                    }
+                    Text {
+                        anchors.fill: parent
+                        text: qsTr("You Win !")
+                        font.family: firaFont.name
+                        color: colors.choose.pardus_white
+                        font.pixelSize: parent.height * 0.13
+                        font.bold: true
+                        anchors.centerIn: parent
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+                Row{
+                    anchors{
+                        bottom: parent.bottom
+                        horizontalCenter: parent.horizontalCenter
+                        bottomMargin: myMargin
+                    }
+                    spacing:parent.width/6.3
+                    Button {
+                        width: wblck.width/3.5
+                        height:wblck.height/5.5
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                color: colors.choose.pardus_orange
+                                radius: 3
+                                Text{
+                                    anchors.centerIn: parent
+                                    text: qsTr("Continue")
+                                    color: colors.choose.pardus_white
+                                    font.family: firaFont.name
+                                    font.pixelSize: wblck.height * 0.08
+                                    font.bold: true
+                                }
+                            }
+                        }
+                        onClicked: {
+                            targetFlag = false;
+                            winMsg.hide()
+                        }
+                    }
+                    Button {
+                        width: wblck.width/3.5
+                        height:wblck.height/5.5
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                color: colors.choose.pardus_orange
+                                radius: 3
+                                Text{
+                                    anchors.centerIn: parent
+                                    text: qsTr("New Game")
+                                    color: colors.choose.pardus_white
+                                    font.family: firaFont.name
+                                    font.pixelSize: wblck.height * 0.08
+                                    font.bold: true
+                                }
+                            }
+                        }
+                        onClicked: {
+                            winMsg.hide()
+                            purge()
+                        }
+                    }
+                }
+            }
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 200
+                }
+            }
+        }
+
+        Rectangle {
+            id: lostMsg
+            width: root.width
+            height: root.height
+            anchors.centerIn: parent
+            opacity: 0.0
+            color: "black"
+            visible: false
+            z: 1
+            function hide() {
+                visible = false
+                opacity = 0.0
+            }
+            function show(text) {
+                visible = true
+                opacity = 0.8
+            }
+            Rectangle {
+                anchors.centerIn: parent
+                width: cellGrid.width
+                height: cellGrid.height/2
+                color: "black"
+                Rectangle {
+                    anchors.fill: parent
+                    width: parent.width
+                    height: parent.height
+                    color: colors.choose.pardus_gray
+                    radius:10
+                    Text {
+                        text: qsTr("Game Over")
+                        color: colors.choose.pardus_white
+                        font.family: firaFont.name
+                        anchors{
+                            horizontalCenter: parent.horizontalCenter
+                            top:parent.top
+                            topMargin: myMargin
+                        }
+                        font.bold: true
+                        font.pixelSize: parent.height * 0.1
+                    }
+                    Text {
+                        anchors.fill: parent
+                        text: qsTr("You Lost!")
+                        font.family: firaFont.name
+                        font.pixelSize: parent.height * 0.13
+                        font.bold: true
+                        color: colors.choose.pardus_white
+                        anchors.centerIn: parent
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+                Row{
+                    anchors{
+                        bottom: parent.bottom
+                        horizontalCenter: parent.horizontalCenter
+                        bottomMargin: myMargin
+                    }
+                    spacing:parent.width/6.3
+                    Button {
+                        width: wblck.width/3.5
+                        height:wblck.height/5.5
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                color: colors.choose.pardus_orange
+                                radius: 3
+                                Text{
+                                    anchors.centerIn: parent
+                                    text: qsTr("Retry")
+                                    color: colors.choose.pardus_white
+                                    font.family: firaFont.name
+                                    font.pixelSize: wblck.height * 0.08
+                                    font.bold: true
+                                }
+                            }
+                        }
+                        onClicked: {
+                            purge()
+                            lostMsg.hide();
+                        }
+                    }
+                    Button {
+                        width: wblck.width/3.5
+                        height:wblck.height/5.5
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                color: colors.choose.pardus_orange
+                                radius: 3
+                                Text{
+                                    anchors.centerIn: parent
+                                    text: qsTr("Exit")
+                                    color: colors.choose.pardus_white
+                                    font.family: firaFont.name
+                                    font.pixelSize: 18
+                                    font.bold: true
+                                }
+                            }
+                        }
+                        onClicked: {
+                            Qt.quit();
+                        }
+                    }
+                }
+            }
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 200
+                }
+            }
+        }
+
         Keys.onPressed: {
-
-            if (event.key === Qt.Key_Left)
-                root.move(-1, 0)
-            if (event.key === Qt.Key_Right)
-                root.move(1, 0)
-            if (event.key === Qt.Key_Up)
-                root.move(0, -1)
-            if (event.key === Qt.Key_Down)
-                root.move(0, 1)
-
+            if (!winMsg.visible){
+                if (event.key === Qt.Key_Left)
+                    root.move(-1, 0)
+                if (event.key === Qt.Key_Right)
+                    root.move(1, 0)
+                if (event.key === Qt.Key_Up)
+                    root.move(0, -1)
+                if (event.key === Qt.Key_Down)
+                    root.move(0, 1)
+            }
             if (event.key === Qt.Key_Space) {
+                if (winMsg.visible){ winMsg.visible = false }
+                if (lostMsg.visible){ lostMsg.visible = false }
                 root.purge()
             }
         }
@@ -597,7 +829,7 @@ ApplicationWindow {
             onReleased: {
                 diffx = endx - startx;
                 diffy = endy - starty;
-                if (Math.abs(diffx) > 80 || Math.abs(diffy) > 80) {
+                if ((Math.abs(diffx) > 80 || Math.abs(diffy) > 80) && winMsg.visible === false ) {
                     if (Math.abs(diffx) > Math.abs(diffy)) {
                         if (diffx > 0) {
                             root.move(1, 0)
