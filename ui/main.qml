@@ -20,7 +20,10 @@ ApplicationWindow {
         focus: false
         property var choose: {"pardus_gray": "#383838",
                               "pardus_orange": "#FF6C00",
-                              "pardus_white": "#EEEEEE"
+                              "pardus_white": "#EEEEEE",
+                              "blue": "#59abe3",
+                              "green": "#8bc34a",
+                              "red": "#fe0d00"
         }
     }
 
@@ -29,6 +32,7 @@ ApplicationWindow {
     color: colors.choose.pardus_gray
 
     property int myMargin:6
+    property int myRadius:6
     property variant numbers: []
     property int cols: 4
     property int rows: 4
@@ -388,7 +392,7 @@ ApplicationWindow {
                     Rectangle {
                         width: (index == 0) ? root.width/4 : root.width/4
                         height: root.height/11
-                        radius: 3
+                        radius: myRadius
                         color: colors.choose.pardus_orange
                         property string scoreText: (index === 0) ? score : bestScore
                         Text {
@@ -482,7 +486,7 @@ ApplicationWindow {
                 style: ButtonStyle {
                     background: Rectangle {
                         color: colors.choose.pardus_orange
-                        radius: 3
+                        radius: myRadius
                         Text{
                             anchors.centerIn: parent
                             text: qsTr("New Game")
@@ -504,7 +508,7 @@ ApplicationWindow {
             color: colors.choose.pardus_orange
             height:root.height-header1.height-header2.height-4*myMargin <= cover.width-2*myMargin ? root.height-header1.height-header2.height-4*myMargin : cover.width-2*myMargin
             width: height
-            radius: 10
+            radius: myRadius
             focus: true
             anchors{
                 top:header2.bottom
@@ -549,7 +553,7 @@ ApplicationWindow {
                         width: parent.cellWidth
                         height: parent.cellHeight
                         color: colors.choose.pardus_gray
-                        radius: 10
+                        radius: myRadius
                         property int col : index % root.cols
                         property int row : index / root.cols
                     }
@@ -582,15 +586,17 @@ ApplicationWindow {
                 width: cellGrid.width
                 height: cellGrid.height/2
                 color: "black"
+                radius: myRadius
                 Rectangle {
+                    id:message1
                     anchors.fill: parent
                     width: parent.width
                     height: parent.height
                     color: colors.choose.pardus_gray
-                    radius:10
+                    radius:myRadius
                     Text {
                         text: qsTr("Congratulations")
-                        color: colors.choose.pardus_white
+                        color: colors.choose.green
                         font.family: firaFont.name
                         anchors{
                             horizontalCenter: parent.horizontalCenter
@@ -601,22 +607,29 @@ ApplicationWindow {
                         font.pixelSize: parent.height * 0.1
                     }
                     Text {
-                        anchors.fill: parent
                         text: qsTr("You Win !")
                         font.family: firaFont.name
                         color: colors.choose.pardus_white
                         font.pixelSize: parent.height * 0.13
                         font.bold: true
-                        anchors.centerIn: parent
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                        y:message1.height/3.6
+                        anchors.horizontalCenter: message1.horizontalCenter
+                    }
+                    Text {
+                        text: qsTr("Score : ")+score
+                        font.family: firaFont.name
+                        font.pixelSize: parent.height * 0.13
+                        font.bold: true
+                        color: colors.choose.blue
+                        y:message1.height/2.1
+                        anchors.horizontalCenter: message1.horizontalCenter
                     }
                 }
                 Row{
                     anchors{
                         bottom: parent.bottom
                         horizontalCenter: parent.horizontalCenter
-                        bottomMargin: myMargin
+                        bottomMargin: myMargin*2
                     }
                     spacing:parent.width/6.3
                     Button {
@@ -625,7 +638,7 @@ ApplicationWindow {
                         style: ButtonStyle {
                             background: Rectangle {
                                 color: colors.choose.pardus_orange
-                                radius: 3
+                                radius: myRadius
                                 Text{
                                     anchors.centerIn: parent
                                     text: qsTr("Continue")
@@ -647,7 +660,7 @@ ApplicationWindow {
                         style: ButtonStyle {
                             background: Rectangle {
                                 color: colors.choose.pardus_orange
-                                radius: 3
+                                radius: myRadius
                                 Text{
                                     anchors.centerIn: parent
                                     text: qsTr("New Game")
@@ -684,25 +697,29 @@ ApplicationWindow {
             function hide() {
                 visible = false
                 opacity = 0.0
+                ngButton.enabled = true
             }
             function show(text) {
                 visible = true
                 opacity = 0.8
+                ngButton.enabled = false
             }
             Rectangle {
                 anchors.centerIn: parent
                 width: cellGrid.width
                 height: cellGrid.height/2
                 color: "black"
+                radius: myRadius
                 Rectangle {
+                    id:message2
                     anchors.fill: parent
                     width: parent.width
                     height: parent.height
                     color: colors.choose.pardus_gray
-                    radius:10
+                    radius:myRadius
                     Text {
                         text: qsTr("Game Over")
-                        color: colors.choose.pardus_white
+                        color: colors.choose.red
                         font.family: firaFont.name
                         anchors{
                             horizontalCenter: parent.horizontalCenter
@@ -713,22 +730,29 @@ ApplicationWindow {
                         font.pixelSize: parent.height * 0.1
                     }
                     Text {
-                        anchors.fill: parent
-                        text: qsTr("You Lost!")
+                        text: qsTr("You Lost !")
+                        font.family: firaFont.name
+                        color: colors.choose.pardus_white
+                        font.pixelSize: parent.height * 0.13
+                        font.bold: true
+                        y:message2.height/3.6
+                        anchors.horizontalCenter: message2.horizontalCenter
+                    }
+                    Text {
+                        text: qsTr("Score : ")+score
                         font.family: firaFont.name
                         font.pixelSize: parent.height * 0.13
                         font.bold: true
-                        color: colors.choose.pardus_white
-                        anchors.centerIn: parent
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                        color: colors.choose.blue
+                        y:message2.height/2.1
+                        anchors.horizontalCenter: message2.horizontalCenter
                     }
                 }
                 Row{
                     anchors{
                         bottom: parent.bottom
                         horizontalCenter: parent.horizontalCenter
-                        bottomMargin: myMargin
+                        bottomMargin: myMargin*2
                     }
                     spacing:parent.width/6.3
                     Button {
@@ -737,7 +761,7 @@ ApplicationWindow {
                         style: ButtonStyle {
                             background: Rectangle {
                                 color: colors.choose.pardus_orange
-                                radius: 3
+                                radius: myRadius
                                 Text{
                                     anchors.centerIn: parent
                                     text: qsTr("Retry")
@@ -759,7 +783,7 @@ ApplicationWindow {
                         style: ButtonStyle {
                             background: Rectangle {
                                 color: colors.choose.pardus_orange
-                                radius: 3
+                                radius: myRadius
                                 Text{
                                     anchors.centerIn: parent
                                     text: qsTr("Exit")
