@@ -1,3 +1,13 @@
+eta-tile-game (0.2.2) unstable; urgency=medium
+
+  [ Yunusemre Şentürk ]
+  * Update app icon
+
+  [ Fatih Altun ]
+  * Accept pull request
+
+ -- Fatih Altun <fatih.altun@pardus.org.tr>  Wed, 19 Dec 2018 12:13:24 +0000
+
 eta-tile-game (0.2.1) unstable; urgency=medium
 
   * Update translation
