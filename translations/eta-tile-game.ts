@@ -1,73 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="tr_TR">
 <context>
     <name>main</name>
     <message>
         <location filename="../ui/main.qml" line="14"/>
         <source>ETA Tile Game</source>
-        <translation type="unfinished"></translation>
+        <translation>ETA Fayans Oyunu</translation>
     </message>
     <message>
         <location filename="../ui/main.qml" line="371"/>
         <source>TILE GAME</source>
-        <translation type="unfinished"></translation>
+        <translation>FAYANS OYUNU</translation>
     </message>
     <message>
         <location filename="../ui/main.qml" line="395"/>
         <source>SCORE</source>
-        <translation type="unfinished"></translation>
+        <translation>PUAN</translation>
     </message>
     <message>
         <location filename="../ui/main.qml" line="395"/>
         <source>BEST</source>
-        <translation type="unfinished"></translation>
+        <translation>EN İYİ PUAN</translation>
     </message>
     <message>
         <location filename="../ui/main.qml" line="466"/>
         <source>Join the numbers and get to the 2048 tile!</source>
-        <translation type="unfinished"></translation>
+        <translation>Sayıları birleştir ve 2048 sayısını elde et !</translation>
     </message>
     <message>
         <location filename="../ui/main.qml" line="488"/>
-        <location filename="../ui/main.qml" line="653"/>
+        <location filename="../ui/main.qml" line="661"/>
         <source>New Game</source>
-        <translation type="unfinished"></translation>
+        <translation>Yeni Oyun</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="592"/>
+        <location filename="../ui/main.qml" line="593"/>
         <source>Congratulations</source>
-        <translation type="unfinished"></translation>
+        <translation>Tebrikler</translation>
     </message>
     <message>
         <location filename="../ui/main.qml" line="605"/>
         <source>You Win !</source>
-        <translation type="unfinished"></translation>
+        <translation>Kazandınız !</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="631"/>
+        <location filename="../ui/main.qml" line="614"/>
+        <location filename="../ui/main.qml" line="734"/>
+        <source>Score : </source>
+        <translation>Puanınız : </translation>
+    </message>
+    <message>
+        <location filename="../ui/main.qml" line="639"/>
         <source>Continue</source>
-        <translation type="unfinished"></translation>
+        <translation>Devam Et</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="704"/>
+        <location filename="../ui/main.qml" line="713"/>
         <source>Game Over</source>
-        <translation type="unfinished"></translation>
+        <translation>Oyun Bitti</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="717"/>
-        <source>You Lost!</source>
-        <translation type="unfinished"></translation>
+        <location filename="../ui/main.qml" line="725"/>
+        <source>You Lost !</source>
+        <translation>Kaybettiniz !</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="743"/>
+        <location filename="../ui/main.qml" line="759"/>
         <source>Retry</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekrar Dene</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="765"/>
+        <location filename="../ui/main.qml" line="781"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Çıkış</translation>
     </message>
 </context>
 </TS>

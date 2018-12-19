@@ -30,12 +30,12 @@
     </message>
     <message>
         <location filename="../ui/main.qml" line="488"/>
-        <location filename="../ui/main.qml" line="653"/>
+        <location filename="../ui/main.qml" line="661"/>
         <source>New Game</source>
         <translation>Yeni Oyun</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="592"/>
+        <location filename="../ui/main.qml" line="593"/>
         <source>Congratulations</source>
         <translation>Tebrikler</translation>
     </message>
@@ -45,27 +45,33 @@
         <translation>Kazandınız !</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="631"/>
+        <location filename="../ui/main.qml" line="614"/>
+        <location filename="../ui/main.qml" line="734"/>
+        <source>Score : </source>
+        <translation>Puanınız : </translation>
+    </message>
+    <message>
+        <location filename="../ui/main.qml" line="639"/>
         <source>Continue</source>
         <translation>Devam Et</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="704"/>
+        <location filename="../ui/main.qml" line="713"/>
         <source>Game Over</source>
         <translation>Oyun Bitti</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="717"/>
-        <source>You Lost!</source>
+        <location filename="../ui/main.qml" line="725"/>
+        <source>You Lost !</source>
         <translation>Kaybettiniz !</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="743"/>
+        <location filename="../ui/main.qml" line="759"/>
         <source>Retry</source>
         <translation>Tekrar Dene</translation>
     </message>
     <message>
-        <location filename="../ui/main.qml" line="765"/>
+        <location filename="../ui/main.qml" line="781"/>
         <source>Exit</source>
         <translation>Çıkış</translation>
     </message>
